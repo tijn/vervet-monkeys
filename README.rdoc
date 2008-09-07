@@ -4,7 +4,7 @@
 
 Want to know when the page at a given URL changes? The Watcher in the
 Water will tell you over Jabber; just create a ~/.watcher/config.yml
-file and toss the sucker in your crontab!
+file and toss +watcher_in_the_water+ into your crontab!
 
   ---
   jid: watcher-in-the-water@jabber.org
@@ -13,6 +13,11 @@ file and toss the sucker in your crontab!
   urls:
   - http://rubyconf.org
 
+== Issues
+
+XMPP4R takes a really long time to authenticate with my Jabber
+server. Maybe it's just me though... No idea. This shouldn't run more
+than once an hour or so, whatever; shouldn't matter.
 
 == Install
 
