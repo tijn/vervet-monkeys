@@ -1,0 +1,23 @@
+= Watcher In The Water - http://en.wikipedia.org/wiki/Watcher_in_the_Water
+
+== DESCRIPTION:
+
+Want to know when the page at a given URL changes? The Watcher in the
+Water will tell you over Jabber; just create a ~/.watcher/config.yml
+file and toss the sucker in your crontab!
+
+  ---
+  jid: watcher-in-the-water@jabber.org
+  password: mellon
+  recipient: phil@hagelb.org
+  urls:
+  - http://rubyconf.org
+
+
+== INSTALL:
+
+* sudo gem install technomancy-watcher_in_the_water --source=http://gems.github.com
+
+== TODO:
+
+* Live tests

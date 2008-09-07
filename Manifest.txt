@@ -1,0 +1,11 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/watcher_in_the_water
+lib/watcher_in_the_water.rb
+test/fixtures/dimrill_gate
+test/fixtures/durins_bridge
+test/fixtures/west_gate
+test/test_watcher_in_the_water.rb
+test/watcher/test.yml
