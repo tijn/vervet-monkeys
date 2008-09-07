@@ -21,7 +21,13 @@ than once an hour or so, whatever; shouldn't matter.
 
 == Install
 
-* sudo gem install technomancy-watcher_in_the_water --source=http://gems.github.com
+  $ sudo gem install technomancy-watcher_in_the_water --source=http://gems.github.com
+
+== TODO
+
+* Finish live tests?
+* Just send a diff over IM?
+* Only look at a given XPath?
 
 == Author
 
