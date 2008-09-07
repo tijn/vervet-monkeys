@@ -48,9 +48,10 @@ urls: ---
     end
   end
 
-  def alert(mess)
+  def alert(message)
     connect
-    @client.send Message.new(@config['to'], mess).set_type(:normal).set_id('1')
+    @client.send Message.new(@config['recipient'],
+                             message).set_type(:normal).set_id('1')
   end
 
   def connect
