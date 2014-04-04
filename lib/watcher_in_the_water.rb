@@ -31,11 +31,11 @@ end_help
   module_function
 
   def configure(config = nil)
-    config = File.expand_path(config || '~/.watcher/config.yml')
-    FileUtils.cd(File.dirname(config))
-    @config = YAML.load(File.read(config))
+    filename = File.expand_path(config || '~/.watcher/config.yml')
+    # FileUtils.cd(File.dirname(filename))
+    @config = YAML.load(File.read(filename))
   rescue
-    abort HELP.gsub("{{config}}", config)
+    abort HELP.gsub("{{config}}", filename)
   end
 
   def watch
