@@ -37,22 +37,30 @@ end_help
     abort HELP.gsub("{{config}}", filename)
   end
 
-  def watch
-    @config['urls'].each do |url|
-      content = open(url).read
-      hash = Digest::SHA1.hexdigest(content)
-      filename = 'hashes/' + url_transform(url)
+  def urls
+    @urls ||= load_urls
+  end
 
-      if File.exist?(filename)
-        if File.read(filename) != hash
-          alert("#{url} changed to #{content[0 .. 200]}")
-        end
-      else
-        alert("Watching #{url} for you!")
-      end
-      FileUtils.mkdir_p(File.dirname(filename))
-      File.open(filename, 'w') { |f| f.write hash }
+  def watch
+    urls.each do |url|
+      watch_url(url)
     end
+  end
+
+  def watch_url(url)
+    content = open(url).read
+    hash = Digest::SHA1.hexdigest(content)
+    filename = 'hashes/' + url_transform(url)
+
+    if File.exist?(filename)
+      if File.read(filename) != hash
+        alert("#{url} changed to #{content[0 .. 200]}")
+      end
+    else
+      alert("Watching #{url} for you!")
+    end
+    FileUtils.mkdir_p(File.dirname(filename))
+    File.open(filename, 'w') { |f| f.write hash }
   end
 
   def alert(message)
@@ -71,5 +79,11 @@ end_help
 
   def url_transform(url)
     url.gsub(/[^\w]/, '_')[0 .. 50] + '_' + Digest::SHA1.hexdigest(url)
+  end
+
+  def load_urls
+    Dir.glob("#{XDG['CONFIG_HOME']}/watcher/urls/*.yml").map do |filename|
+      YAML.load_file(filename)
+    end
   end
 end
