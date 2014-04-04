@@ -3,5 +3,4 @@
 $:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 require 'watcher_in_the_water'
 
-WatcherInTheWater.configure(ARGV.first)
-WatcherInTheWater.watch
+WatcherInTheWater::Watcher.new(ARGV.first).watch
