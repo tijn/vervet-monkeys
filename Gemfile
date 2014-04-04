@@ -1,5 +1,5 @@
 source "http://rubygems.org"
 
 gem 'hoe'
-# gem 'open-uri'
+gem 'xdg'
 gem 'xmpp4r'
