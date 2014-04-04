@@ -9,7 +9,22 @@ require 'yaml'
 require 'digest/sha1'
 require 'fileutils'
 
+
 module WatcherInTheWater
+
+  HELP = <<-end_help
+You need {{config}} to contain a sender jabber ID, password,
+a recipient jabber ID, and a list of URLs in YAML format. Example:
+
+---
+jid: watcher-in-the-water@jabber.org
+password: mellon
+recipient: phil@hagelb.org
+urls: ---
+  http://rubyconf.org
+end_help
+
+
   include Jabber
   VERSION = '0.1'
 
@@ -20,16 +35,7 @@ module WatcherInTheWater
     FileUtils.cd(File.dirname(config))
     @config = YAML.load(File.read(config))
   rescue
-    abort "You need #{config} to contain a sender jabber ID, password,
-a recipient jabber ID, and a list of URLs in YAML format. Example:
-
----
-jid: watcher-in-the-water@jabber.org
-password: mellon
-recipient: phil@hagelb.org
-urls: ---
-  http://rubyconf.org
-"
+    abort HELP.gsub("{{config}}", config)
   end
 
   def watch
