@@ -30,8 +30,9 @@ end_help
 
   module_function
 
-  def configure(config = nil)
-    filename = File.expand_path(config || '~/.watcher/config.yml')
+  def configure(config_file = nil)
+    config_file ||= "~/.watcher/config.yml"
+    filename = File.expand_path(config_file)
     # FileUtils.cd(File.dirname(filename))
     @config = YAML.load(File.read(filename))
   rescue
