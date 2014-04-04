@@ -30,7 +30,7 @@ end_help
   module_function
 
   def configure(config_file = nil)
-    config_file ||= "#{XDG['CONFIG_HOME']}/.watcher/config.yml"
+    config_file ||= "#{XDG['CONFIG_HOME']}/watcher/config.yml"
     filename = File.expand_path(config_file)
     @config = YAML.load_file(filename)
   rescue
