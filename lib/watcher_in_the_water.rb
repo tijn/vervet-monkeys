@@ -32,7 +32,7 @@ end_help
   def configure(config_file = nil)
     config_file ||= "#{XDG['CONFIG_HOME']}/.watcher/config.yml"
     filename = File.expand_path(config_file)
-    @config = YAML.load(File.read(filename))
+    @config = YAML.load_file(filename)
   rescue
     abort HELP.gsub("{{config}}", filename)
   end
