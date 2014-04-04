@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+require "rubygems"
+require 'bundler/setup'
+Bundler.require
+
 require 'open-uri'
 require 'yaml'
 require 'digest/sha1'
-require 'xmpp4r'
 require 'fileutils'
 
 module WatcherInTheWater

@@ -1,2 +1,4 @@
 test/watcher/fixtures/*
 test/watcher/hashes/*
+.bundle
+

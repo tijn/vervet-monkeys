@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../lib/watcher_in_the_water'
+$:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
+require 'watcher_in_the_water'
 
 WatcherInTheWater.configure(ARGV.first)
 WatcherInTheWater.watch
