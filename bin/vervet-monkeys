@@ -6,4 +6,21 @@ Bundler.require
 $:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 require 'vervet_monkeys'
 
-VervetMonkeys::Monkey.new(ARGV.first).watch
+case ARGV.first
+when 'reset'
+  FileUtils.rm Dir.glob(VervetMonkeys::DATA_DIR + '*')
+when nil, 'watch'
+  VervetMonkeys::Monkey.new.watch
+else
+  puts <<-end_string
+usage: #{__FILE__} [command] [args]
+
+Running #{__FILE__} without any arguments will have the same effect as wacth.
+
+  help   Shows this message
+  reset  Remove all data; all pages will be "new" again
+  watch  Watch for changes in the configured urls
+
+end_string
+end
+
