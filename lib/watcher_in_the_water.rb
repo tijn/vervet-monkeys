@@ -8,6 +8,7 @@ require 'open-uri'
 require 'yaml'
 require 'digest/sha1'
 require 'fileutils'
+require 'watcher_in_the_water/url_fetcher'
 
 module WatcherInTheWater
   HELP = <<-end_help
@@ -28,7 +29,7 @@ end_help
     include Jabber
 
     def initialize(config_file = nil)
-      config_file ||= "#{XDG['CONFIG_HOME']}/watcher/config.yml"
+      config_file ||= "#{XDG['CONFIG_HOME']}/url-watcher/config.yml"
       filename = File.expand_path(config_file)
       @config = YAML.load_file(filename)
     rescue
@@ -46,19 +47,7 @@ end_help
     end
 
     def watch_url(url)
-      content = open(url).read
-      hash = Digest::SHA1.hexdigest(content)
-      filename = 'hashes/' + url_transform(url)
-
-      if File.exist?(filename)
-        if File.read(filename) != hash
-          alert("#{url} changed to #{content[0 .. 200]}")
-        end
-      else
-        alert("Watching #{url} for you!")
-      end
-      FileUtils.mkdir_p(File.dirname(filename))
-      File.open(filename, 'w') { |f| f.write hash }
+      UrlChecker.new(url['url'], jabber_client, css: url['css']).check
     end
 
     def alert(message)
@@ -75,12 +64,18 @@ end_help
       @client.auth(@config['password'])
     end
 
+    def jabber_client
+      # connect
+      # @client
+      STDOUT
+    end
+
     def url_transform(url)
       url.gsub(/[^\w]/, '_')[0 .. 50] + '_' + Digest::SHA1.hexdigest(url)
     end
 
     def load_urls
-      Dir.glob("#{XDG['CONFIG_HOME']}/watcher/urls/*.yml").map do |filename|
+      Dir.glob("#{XDG['CONFIG_HOME']}/url-watcher/urls/*.yml").map do |filename|
         YAML.load_file(filename)
       end
     end
@@ -97,7 +92,7 @@ end_help
     end
 
     def content
-      @content ||= open(url).read
+      @content ||= UrlFetcher.new(url, options).content
     end
 
     def hash
@@ -105,19 +100,25 @@ end_help
     end
 
     def filename
-      @filename ||= "#{XDG['DATA_HOME']}/watcher/" + url_transform(url)
+      @filename ||= "#{XDG['DATA_HOME']}/url-watcher/" + url_transform(url)
     end
 
     def check
       if File.exist?(filename)
-        if File.read(filename) != hash
-          jabber.alert("#{url} changed to #{content[0 .. 200]}")
+        unless File.read(filename) == content
+          save!
+          jabber.puts("#{url} changed") # to #{content[0 .. 200]}")
         end
       else
-        jabber.alert("Watching #{url} for you!")
+        save!
+        jabber.puts("Watching #{url} for you!")
       end
+    end
+
+    def save!
+      puts "saving #{filename}"
       FileUtils.mkdir_p(File.dirname(filename))
-      File.open(filename, 'w') { |f| f.write hash }
+      File.open(filename, 'w') { |f| f.write content }
     end
 
     def url_transform(url)
