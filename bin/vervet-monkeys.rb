@@ -19,7 +19,7 @@ else
 usage: #{executable} [command] [args]
 
 in a crontab:
-* /2 * * * /bin/sh -c '#{File.expand_path(__FILE__).chop.chop.chop}' >/dev/null 2>&1
+* */2 * * * /bin/sh -c '#{File.expand_path(__FILE__).chop.chop.chop}' >/dev/null 2>&1
 
 Running #{executable} without any arguments will have the same effect as the
 watch command.
