@@ -1,4 +1,4 @@
-module WatcherInTheWater
+module UrlWatcher
 
   class UrlFetcher
     attr_reader :url, :options

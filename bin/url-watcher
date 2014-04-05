@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 $:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
-require 'watcher_in_the_water'
+require 'url_watcher'
 
-WatcherInTheWater::Watcher.new(ARGV.first).watch
+UrlWatcher::Watcher.new(ARGV.first).watch

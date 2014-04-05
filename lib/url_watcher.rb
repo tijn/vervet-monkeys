@@ -8,28 +8,28 @@ require 'open-uri'
 require 'yaml'
 require 'digest/sha1'
 require 'fileutils'
-require 'watcher_in_the_water/url_fetcher'
+require 'url_watcher/url_fetcher'
 
-module WatcherInTheWater
+module UrlWatcher
   HELP = <<-end_help
 You need {{config}} to contain a sender jabber ID, password,
 a recipient jabber ID, and a list of URLs in YAML format. Example:
 
 ---
-jid: watcher-in-the-water@jabber.org
+jid: url-watcher@jabber.org
 password: mellon
 recipient: phil@hagelb.org
 urls: ---
   http://rubyconf.org
 end_help
-  VERSION = '0.1'
-
+  VERSION = '1.0'
+  APP_DIR = 'url-watcher'
 
   class Watcher
     include Jabber
 
     def initialize(config_file = nil)
-      config_file ||= "#{XDG['CONFIG_HOME']}/url-watcher/config.yml"
+      config_file ||= "#{config_dir}/config.yml"
       filename = File.expand_path(config_file)
       @config = YAML.load_file(filename)
     rescue
@@ -75,10 +75,15 @@ end_help
     end
 
     def load_urls
-      Dir.glob("#{XDG['CONFIG_HOME']}/url-watcher/urls/*.yml").map do |filename|
+      Dir.glob("#{config_dir}/urls/*.yml").map do |filename|
         YAML.load_file(filename)
       end
     end
+
+    def config_dir
+      "#{XDG['CONFIG_HOME']}/#{APP_DIR}/"
+    end
+
   end
 
 
@@ -100,7 +105,7 @@ end_help
     end
 
     def filename
-      @filename ||= "#{XDG['DATA_HOME']}/url-watcher/" + url_transform(url)
+      @filename ||= "#{XDG['DATA_HOME']}/#{APP_DIR}}/" + url_transform(url)
     end
 
     def check
