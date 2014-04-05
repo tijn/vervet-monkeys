@@ -2,6 +2,10 @@ require 'vervet_monkeys/monkey'
 
 module VervetMonkeys
   HELP = <<-end_help
+Seems like you're missing a config file. Please make one.
+
+$ vim {{config}}
+
 The settings should look like this:
 
 ---
