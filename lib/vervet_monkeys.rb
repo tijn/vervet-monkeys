@@ -21,5 +21,5 @@ end_help
   APP_DIR = 'vervet-monkeys'
 
   CONFIG_DIR = "#{XDG['CONFIG_HOME']}/#{APP_DIR}/"
-  DATA_DIR = "#{XDG['DATA_HOME']}/#{APP_DIR}}/"
+  DATA_DIR = "#{XDG['DATA_HOME']}/#{APP_DIR}/"
 end
