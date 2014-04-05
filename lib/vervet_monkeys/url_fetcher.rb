@@ -1,4 +1,6 @@
-module UrlWatcher
+require 'open-uri'
+
+module VervetMonkeys
 
   # grabs a page
   #  or a part of a page

@@ -1,6 +1,8 @@
-require 'url_watcher/url_fetcher'
+require 'digest/sha1'
+require 'fileutils'
+require 'vervet_monkeys/url_fetcher'
 
-module UrlWatcher
+module VervetMonkeys
 
   # manages ONE url.
   # it compares the previous version with the current version of the page and sends out alerts
@@ -23,14 +25,14 @@ module UrlWatcher
     end
 
     def filename
-      @filename ||= "#{XDG['DATA_HOME']}/#{APP_DIR}}/" + url_transform(url)
+      @filename ||= DATA_DIR + url_transform(url)
     end
 
     def check
       if File.exist?(filename)
         old_content = File.read(filename)
         unless old_content == content
-          changed!
+          alert_changed!
           save!
         end
       else
