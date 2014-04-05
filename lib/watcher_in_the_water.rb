@@ -23,6 +23,7 @@ urls: ---
 end_help
   VERSION = '0.1'
 
+
   class Watcher
     include Jabber
 
@@ -82,6 +83,45 @@ end_help
       Dir.glob("#{XDG['CONFIG_HOME']}/watcher/urls/*.yml").map do |filename|
         YAML.load_file(filename)
       end
+    end
+  end
+
+
+  class UrlChecker
+    attr_accessor :url, :jabber, :options
+
+    def initialize(url, jabber, options = {})
+      @url = url
+      @jabber = jabber
+      @options = options
+    end
+
+    def content
+      @content ||= open(url).read
+    end
+
+    def hash
+      @hash ||= Digest::SHA1.hexdigest(content)
+    end
+
+    def filename
+      @filename ||= "#{XDG['DATA_HOME']}/watcher/" + url_transform(url)
+    end
+
+    def check
+      if File.exist?(filename)
+        if File.read(filename) != hash
+          jabber.alert("#{url} changed to #{content[0 .. 200]}")
+        end
+      else
+        jabber.alert("Watching #{url} for you!")
+      end
+      FileUtils.mkdir_p(File.dirname(filename))
+      File.open(filename, 'w') { |f| f.write hash }
+    end
+
+    def url_transform(url)
+      url.gsub(/[^\w]/, '_')[0 .. 50] + '_' + Digest::SHA1.hexdigest(url)
     end
   end
 end
