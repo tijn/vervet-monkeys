@@ -24,6 +24,7 @@ Running #{__FILE__} without any arguments will have the same effect as watch.
   reset   Remove all data; all pages will be "new" again
   watch   Watch for changes in the configured urls
 
+* /2 * * * /bin/bash -c 'export PATH="$HOME/.rbenv/bin:$PATH" ; eval "$(rbenv init -)"; ruby #{File.expand_path(__FILE)}' >/dev/null 2>&1
+
 end_string
 end
-
