@@ -1,5 +1,7 @@
 module UrlWatcher
 
+  # grabs a page
+  #  or a part of a page
   class UrlFetcher
     attr_reader :url, :options
 
