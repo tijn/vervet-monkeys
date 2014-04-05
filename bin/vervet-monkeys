@@ -15,7 +15,7 @@ else
   puts <<-end_string
 usage: #{__FILE__} [command] [args]
 
-Running #{__FILE__} without any arguments will have the same effect as wacth.
+Running #{__FILE__} without any arguments will have the same effect as watch.
 
   help   Shows this message
   reset  Remove all data; all pages will be "new" again
