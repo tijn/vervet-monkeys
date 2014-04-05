@@ -1,30 +1,7 @@
-#!/usr/bin/env ruby
-require "rubygems"
-require 'bundler/setup'
-Bundler.require
+#!/bin/sh
 
-$:.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
-require 'vervet_monkeys'
-
-case ARGV.first
-when 'config'
-  puts Dir.glob(VervetMonkeys::CONFIG_DIR + '**/*')
-when 'reset'
-  FileUtils.rm Dir.glob(VervetMonkeys::DATA_DIR + '*')
-when nil, 'watch'
-  VervetMonkeys::Monkey.new.watch
-else
-  puts <<-end_string
-usage: #{__FILE__} [command] [args]
-
-Running #{__FILE__} without any arguments will have the same effect as watch.
-
-  config  List all config files
-  help    Shows this message
-  reset   Remove all data; all pages will be "new" again
-  watch   Watch for changes in the configured urls
-
-* /2 * * * /bin/bash -c 'export PATH="$HOME/.rbenv/bin:$PATH" ; eval "$(rbenv init -)"; ruby #{File.expand_path(__FILE)}' >/dev/null 2>&1
-
-end_string
-end
+if [ -d $HOME/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
+$0.rb $*
