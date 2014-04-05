@@ -15,6 +15,7 @@ module VervetMonkeys
     # include Jabber
 
     def initialize(config_file = nil)
+      FileUtils.mkdir_p(CONFIG_DIR + '/urls')
       config_file ||= CONFIG_DIR + "config.yml"
       filename = File.expand_path(config_file)
       @config = YAML.load_file(filename)
