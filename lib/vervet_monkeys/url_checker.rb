@@ -7,6 +7,7 @@ module VervetMonkeys
   # manages ONE url.
   # it compares the previous version with the current version of the page and sends out alerts
   class UrlChecker
+    include HTMLDiff
     attr_accessor :url, :options, :name, :notifier
 
     def initialize(url, notifier, options = {})
@@ -32,7 +33,7 @@ module VervetMonkeys
       if File.exist?(filename)
         old_content = File.read(filename)
         unless old_content == content
-          alert_changed!
+          alert_changed!(diff(old_content, content))
           save!
         end
       else
@@ -42,17 +43,11 @@ module VervetMonkeys
     end
 
     def alert_changed!(diff = nil)
-      notifier.mail(
-        "#{url} changed",
-        "Hi there,\n\nJust writing you to say that [#{name}](#{url}) got updated.\n\nBye!\n",
-        attachments: { "page.html" => content, 'diff' => diff })
+      notifier.notify_changed(name, url, content, diff)
     end
 
     def alert_new!
-      notifier.mail(
-        "Watching #{name} for you!",
-        "Watching [#{name}](#{url}) for you!",
-        attachments: { "page.html" => content })
+      notifier.notify_new(name, url, content)
     end
 
     def save!
